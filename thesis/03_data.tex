@@ -1,0 +1,44 @@
+\section{Dane}
+\subsection{Zbiór danych}
+Wykorzystany zbiór danych pozyskano z serwisu \url{codeocean.com} \cite{dane}. Zbiór ten udostępniona na licencji GNU General Public License (GPL) a jego autorami są: 
+
+\begin{enumerate}
+    \item Paola A. Sánchez-Sánchez
+    \item José Rafael García-González
+    \item Juan Manuel Rua Ascar. 
+\end{enumerate}
+
+\noindent
+Cała trójka z pochodzi Universidad Simón Bolívar, Barranquila w Kolumbii.\\
+
+\noindent
+Zbiór zawierał anonimowe dane 400 rozpoznanych przypadków a każdy z przypadków 23 cechy. Cechy miały różny typ (np. wiek pacjenta (typ całkowity) czy wystąpienie danego objawu (typ binarny)) co przemawiało za użyciem normalizacji przy użyciu MinMaxScalera z biblioteki Scikit-learn.\\
+
+\noindent
+W zbiorze znajdowały się dane dotyczące 7 rodzajów bólu głowy.
+Zbiór nie był zbiorem zbalansowanym (co należy mieć na uwadzę w dajszej analizie):
+
+\begin{verbatim}
+    Type
+    Basilar-type aura 		            18
+    Familial hemiplegic migraine   24
+    Migraine without aura 		        60
+    Other 				                        17
+    Sporadic hemiplegic migraine   14
+    Typical aura with migraine 	  247
+    Typical aura without migraine  20
+    dtype: int64
+\end{verbatim}
+
+\noindent
+Zbiór nie posiadał brakujących danych więc nie zaistniała konieczność imputacji.
+
+\subsection{informacje prawne}
+\noindent
+Zbiór udostępniony został na licencji GNU General Public License (GPL) \cite{dane}.\\
+
+\noindent
+Wykorzystane oprogramowanie korzystało z licenji:\\
+\indent Jezyk Python: Python Software Foundation License \cite{python}\\
+\indent Biblioteka pandas: BSD 3-Clause License \cite{pandas}\\
+\indent Biblioteka NumPY: BSD 3-Clause License \cite{numpy}\\
