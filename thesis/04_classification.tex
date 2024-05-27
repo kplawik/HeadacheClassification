@@ -1,0 +1,25 @@
+\section{Klasyfikacja}
+\subsection{Wstęp teoretyczny}
+\subsubsection{Klasyfikator kNN (k-najbliszych sąsiadów)}
+Klasyfikator kNN, ze względu na swoją intuicyjność, jest jednym z najpopularniejszych klasyfikatorów. Działa on zgodnie z regułą: obserwacja x zostaje sklasyfikowana do najliczniejszej klasy z pośród k obserwacji najbliszych punktowi x.\\
+
+Szacowane prawdopodobieństwo przynaleności obserwacji ${x}$ do danej klasy wsród ${x}$ najbliszych sąsiadów, zapisujemy jako:
+
+\begin{equation}
+    \hat{j}|\mathbf{x} = \frac{1}{k} \sum_{i=1}^{n} l\left( \rho(\mathbf{x}, \mathbf{x}_i) \leq \rho(\mathbf{x}, \mathbf{x}^{(k)}) \right) l(y_i = j), \quad j = 1, \ldots, g
+\end{equation}
+
+gdzie:\\
+${x}^{(k)}$ - jest k-tym co do odległości ${x}$ punktem z próby uczącej\\
+$\rho$ - jest pewną odległością, określaną jako miara niepodobieństwa.
+
+\subsubsection{Naiwny Klasyfikator Bayesa}
+Jest klasyfikatorem probablistycznym, który opiera się na uyciu twierdzenia.
+
+\begin{equation}
+P(C|F_1, \ldots, F_n)
+\end{equation}
+
+gdzie:\\
+$C$ - oznacza zmienną zależną, będącą zbiorem etykiet klas\\
+ $F_1, \ldots, F_n$ - cechami opisującymi zbiór przypadków.
