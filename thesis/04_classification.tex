@@ -1,9 +1,9 @@
 \section{Klasyfikacja}
 \subsection{Wstęp teoretyczny}
-\subsubsection{Klasyfikator kNN (k-najbliszych sąsiadów)}
-Klasyfikator kNN, ze względu na swoją intuicyjność, jest jednym z najpopularniejszych klasyfikatorów. Działa on zgodnie z regułą: obserwacja x zostaje sklasyfikowana do najliczniejszej klasy z pośród k obserwacji najbliszych punktowi x.\\
+\subsubsection{Klasyfikator kNN (k-najbliższych sąsiadów) \cite{wyklad}}
+Klasyfikator kNN, ze względu na swoją intuicyjność, jest jednym z najpopularniejszych klasyfikatorów. Działa on zgodnie z regułą: obserwacja x zostaje sklasyfikowana do najliczniejszej klasy z pośród k obserwacji najbliższych punktowi x.\\
 
-Szacowane prawdopodobieństwo przynaleności obserwacji ${x}$ do danej klasy wsród ${x}$ najbliszych sąsiadów, zapisujemy jako:
+Szacowane prawdopodobieństwo przynależności obserwacji ${x}$ do danej klasy wśród ${x}$ najbliższych sąsiadów, zapisujemy jako:
 
 \begin{equation}
     \hat{j}|\mathbf{x} = \frac{1}{k} \sum_{i=1}^{n} l\left( \rho(\mathbf{x}, \mathbf{x}_i) \leq \rho(\mathbf{x}, \mathbf{x}^{(k)}) \right) l(y_i = j), \quad j = 1, \ldots, g
@@ -13,8 +13,8 @@ gdzie:\\
 ${x}^{(k)}$ - jest k-tym co do odległości ${x}$ punktem z próby uczącej\\
 $\rho$ - jest pewną odległością, określaną jako miara niepodobieństwa.
 
-\subsubsection{Naiwny Klasyfikator Bayesa}
-Jest klasyfikatorem probablistycznym, który opiera się na uyciu twierdzenia.
+\subsubsection{Naiwny Klasyfikator Bayesa \cite{wyklad}}
+Jest klasyfikatorem probabilistycznym, który opiera się na użyciu twierdzenia.
 
 \begin{equation}
 P(C|F_1, \ldots, F_n)
@@ -22,4 +22,80 @@ P(C|F_1, \ldots, F_n)
 
 gdzie:\\
 $C$ - oznacza zmienną zależną, będącą zbiorem etykiet klas\\
- $F_1, \ldots, F_n$ - cechami opisującymi zbiór przypadków.
+ $F_1, \ldots, F_n$ - cechami opisującymi zbiór przypadków.\\
+
+ Korzystając z twierdzenia Bayesa, które mówi że dla dowolnej hipotezy $h \in \mathcal{H}$ oraz zbioru danych D zachodzi równość:
+
+\begin{equation}
+    P(h|D) = \frac{P(h) P(D|h)}{P(D)}
+\end{equation}
+
+oraz niezalezności warunkowej cech $F_i$ oraz $F_j$ dla $i \neq j$ otrzymujemy:
+\begin{equation}
+    P(F_i|C, F_j) = P(F_i|C)
+\end{equation}
+Co ostatecznie daje:\\
+
+\begin{equation}
+    P(C|F_1, \ldots, F_n) = \frac{1}{Z} P(C) \prod_{i=1}^n P(F_i|C)
+\end{equation}
+przy czym $Z$ oznacza współczynnik skalujący, zależny od atrybutów $F_1, \ldots, F_n$ i ustalony w przypadku znanych wartości atrybutów cech.\\
+    
+Zatem wynik działania naiwnego klasyfikatora bayesowskiego można zapisać jako:
+\begin{equation}
+    \text{klasa}(f_1, \ldots, f_n) = \arg\max_c P(C = c) \prod_{i=1}^n P(F_i = f_i | C = c)
+\end{equation}
+
+\subsubsection{SVM - Maszyna Wektorów Nośnych \cite{svm_wiki} \cite{wyklad}}
+Maszyna Wektorów Nośnych (Maszyna Wektorów Wspierających) jest to abstrakcyjny koncept maszyny, która działa jak klasyfikator, a której nauka ma na celu wyznaczenie hiperpłaszczyzny rozdzielającej z maksymalnym marginesem przykłady należące do dwóch klas.\\
+
+Zadanie sprowadza się do znalezienia granicy decyzyjnej między klasami i związane jest z pojęciem separowalności liniowej, zgodnie z którym dwie klasy są liniowo separowalne, gdy istnieje hiperpłaszczyzna $H$ postaci $g(x)$ wyrażona równaniem:
+\begin{equation}
+    g(\mathbf{x}) = \mathbf{w}^T \mathbf{x} + b.
+\end{equation}
+    przyjmująca wartości:
+\begin{equation}
+    \begin{cases}
+    g(\mathbf{x}_i) > 0 & \text{jeśli } \mathbf{x}_i \in 1, \\
+    g(\mathbf{x}_i) < 0 & \text{jeśli } \mathbf{x}_i \in -1
+    \end{cases}
+\end{equation}
+    gdzie: $\mathbf{x}$ - oznacza wektor danych, zaś $\mathbf{w}$ oraz $b$ są parametrami modelu.\\
+
+W rezultacie można uzyskać zbiór wielu możliwych rozwiązań (czyli hiperpłaszczyzn), z których wybierane jest takie, które maksymalizuje margines klasyfikatora liniowego:\\
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.8]{svm}
+    \caption{Schemat działania SVM}
+    \label{fig:svm}
+\end{figure}\\
+Powyższy rysunek przedstawia uproszczony schemat działania SVM - źródło: materiały wykładowe.
+
+\subsection{Ewaluacja modelu klasyfikacyjnego}
+\subsubsection{Macierz pomyłek \cite{wyklad}}
+Macierz pomyłek (błędów, ang. confusion matrix), inaczej określana mianem tablicy kontyngencji (ang. contingency table). prezentuje liczby przypadków należących do poszczególnych poprawnych klas decyzyjnych oraz tych, które są przewidywane.\\
+
+W przypadku wielu etykiet macierz pomyłek jest macierzą kwadratowa m x m:\\
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+     & Class$_1$ & Class$_2$ & \ldots & Class$_m$ \\
+    \hline
+    Class$_1$ & $n_{11}$ & $n_{12}$ & \ldots & $n_{1m}$ \\
+    \hline
+    Class$_2$ & $n_{21}$ & $n_{22}$ & \ldots & $n_{2m}$ \\
+    \hline
+    \vdots & \vdots & \vdots & \vdots & \vdots \\
+    \hline
+    Class$_m$ & $n_{m1}$ & $n_{m2}$ & \ldots & $n_{mm}$ \\
+    \hline
+    \end{tabular}
+    \end{table}
+    
+\noindent W klasyfikacji wieloklasowej oznaczamy często tylko jedną klasę jako pozytywną, a pozostałe łącznie definiujemy jako negatywne - sprowadzając problem do wielu klasyfikacji binarnych.
+
+\subsubsection{Pozostałe podstawowe metryki}
+W pracy wykorzystano również: dokładność ($Accuracy$), precyzja ($Precision$), czułość ($Sensitivity$), specyficzność ($Specificity$) oraz predykcję klasy negatywnej ($Negative$ $Predictive$ $Value$). 
