@@ -97,5 +97,15 @@ W przypadku wielu etykiet macierz pomyłek jest macierzą kwadratowa m x m:\\
     
 \noindent W klasyfikacji wieloklasowej oznaczamy często tylko jedną klasę jako pozytywną, a pozostałe łącznie definiujemy jako negatywne - sprowadzając problem do wielu klasyfikacji binarnych.
 
+\subsubsection{Walidacja krzyżowa}
+W związku z tym że wykorzystany wzór nie jest zbiorem zbyt licznym warto zastosować tzn. walidację krzyżową (inaczej kroswalidację, ang. \textit{cross-validation}).\\
+
+\begin{enumerate}
+    \item K-krotna walidacja krzyżowa polega na podzieleniu całego zbioru przypadków na k
+rozłącznych i równolicznych części
+    \item Kolejno każda z tych części stanowi wydzielony zbiór testowy, a pozostałe k-1 - zbiór uczący.
+    \item Walidację przeprowadza się na każdej z k części zbioru, zaś wynik końcowy jest średnią z poszczególnych wyników częściowych.
+\end{enumerate}
+
 \subsubsection{Pozostałe podstawowe metryki}
 W pracy wykorzystano również: dokładność ($Accuracy$), precyzja ($Precision$), czułość ($Sensitivity$), specyficzność ($Specificity$) oraz predykcję klasy negatywnej ($Negative$ $Predictive$ $Value$). 

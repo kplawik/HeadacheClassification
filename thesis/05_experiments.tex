@@ -1,0 +1,80 @@
+\section{Eksperymenty}
+\subsection{Klasyfikacja kNN przy podziale zbioru 80:20}
+\subsubsection{Przebieg}
+W przeprowadzonym eksperymencie dokonano podziału zbioru 80:20 (20 procent danych testowych). Następnie zdefiniowano klasyfikator z parametrem n\_neighbors równym 5. Kolejnym krokiem było wytrenowanie klasyfikatora i przeprowadzenie predykcji na zbiorze testowym:\\
+
+\begin{lstlisting}[language=Python, caption=Definicja i uzycie kNN]
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn import metrics
+
+    knn = KNeighborsClassifier(n_neighbors=5)
+    knn.fit(X_train, y_train)
+
+    y_pred = knn.predict(X_test)
+\end{lstlisting}
+
+\subsubsection{Wyniki}
+Podstawowe metryki dla pierwszego eksperymentu wynosiły precyzja ($Precision$): 0.85 a dokładność ($Accuracy$): 0.7875. Co nie stanowi wiele informacji, korzystam więc z gotowych metryk dostępnych w bibliotece scikit-learn:\\
+
+\begin{lstlisting}[caption=Szczegółowa tabela walidacji]
+                            precision recall f1-score support
+
+            Basilar-type aura    1.00   0.29     0.44      7
+ Familial hemiplegic migraine    0.50   0.80     0.62      5
+        Migraine without aura    0.62   0.62     0.62      8
+                        Other    1.00   0.67     0.80      3
+ Sporadic hemiplegic migraine    0.00   0.00     0.00      4
+   Typical aura with migraine    0.82   0.94     0.88     49
+Typical aura without migraine    1.00   1.00     1.00      4
+
+                     accuracy                    0.79     80
+                    macro avg    0.71   0.62     0.62     80
+                 weighted avg    0.77   0.79     0.76     80
+\end{lstlisting}
+
+\begin{verbatim}
+                             precision  recall f1-score support
+
+            Basilar-type aura     1.00    0.29     0.44       7
+ Familial hemiplegic migraine     0.50    0.80     0.62       5
+        Migraine without aura     0.62    0.62     0.62       8
+                        Other     1.00    0.67     0.80       3
+ Sporadic hemiplegic migraine     0.00    0.00     0.00       4
+   Typical aura with migraine     0.82    0.94     0.88      49
+Typical aura without migraine     1.00    1.00     1.00       4
+
+                     accuracy                      0.79      80
+                    macro avg     0.71    0.62     0.62      80
+                 weighted avg     0.77    0.79     0.76      80
+\end{verbatim}
+
+Jak widzimy na powyszym listingu (i o czym równiez informuje nas warning biblioteki scikit-learn) klasa Sporadic hemiplegic migraine nie wystąpiła w zbiorze testowym ani razu. Zbiór nie jest ani specjalnie liczny ani tez zbalansowany wiec sytuacja taka jest jest zaskoczeniem ale nie przestaje to podwazać efektywności walidacji naszych badań. W kolejnym eksperymencie przedstawiam za to inne proporcje podziały zbioru.
+
+\subsection{Klasyfikacja kNN przy podziale zbioru 75:25}
+\subsubsection{Przebieg}
+Przebieg eksperymentu był dokładnie taki sam jak w poprzednim z tym ze podział zbioru na dane uczące i testowe dokonał się w proporcjach 75:25 (tak jak poprzednio ze sztuczną losowością aby zapewnić powtarzalność wyników).\\
+
+\subsubsection{Wyniki}
+Zmiana podziału zbioru nie wpłynęła zasadniczo na wartość precycji i dokładności ale nie istniał juz problem braku klas w zbiorze testowym, co nie przekreśla juz sensowności przeprowadzonych obliczeń.\\
+
+\begin{verbatim}
+                            precision  recall f1-score support
+
+            Basilar-type aura    1.00    0.12     0.22       8
+ Familial hemiplegic migraine    0.57    0.80     0.67       5
+        Migraine without aura    0.64    0.64     0.64      11
+                        Other    1.00    0.50     0.67       4
+ Sporadic hemiplegic migraine    0.00    0.00     0.00       5
+   Typical aura with migraine    0.77    0.94     0.85      62
+Typical aura without migraine    1.00    0.60     0.75       5
+
+                     accuracy                     0.75     100
+                    macro avg    0.71    0.51     0.54     100
+                 weighted avg    0.75    0.75     0.71     100
+\end{verbatim}
+
+Ogólna wartość precyzji ($Precision$) dla całogo zbioru testowego pozostała na poziomie 85\%. Dokładność ($Accuracy$) na zbioru testowego spadła o 3,75 punktu procentowego (do poziomu 75\%).\\
+
+W przypadku walidacji krzyzowej precyzja wahała się pomiędzy 57 a 100\% (w stosunku do poprzedniego podziału nieznaczne wzrosty w przypadku mniej licznych klas). Recall charakteryzował się duzym rozrzutem wartości - mniej liczne klasy miały recall niekiedy i 0-12\% a te bardziej liczne 80-90\%.\\
+
+Średnia wartość recallu to 51\% a średnia wazona 75\% (ta właśnie uwzględniała nierówną liczebność klas). Podobna róznica miała miejsce w przypadku precyzji wyliczonej przy zastosowaniu walidacji krzyzowej - średnia wartość 71\% - średnia wazona 75\%.
