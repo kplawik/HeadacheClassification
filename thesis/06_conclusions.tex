@@ -1,0 +1,27 @@
+\section{Wnioski}
+\subsection{Podsumowanie}
+W pracy przeanalizowano podstawowe zastosowanie kilku popularnych algorytmów uczenia maszynowego. Oto podsumowanie najważniejszych wniosków z każdego z nich:\\
+
+\textbf{kNN}\\
+Przy podziale zbioru 75-25 algorytm osiągnął dokładność 75\%, precyzję 75\% oraz recall 71\%. Algorytm wyraźnie gorzej radził sobie z rozpoznawaniem mniej licznych klas. Potencjalnie wyniki mogłyby być duzo lepsze dla bardziej licznego, zbalansowanego zbioru.\\
+
+\textbf{Naiwnym Klasyfikator Bayesa}\\
+Udało się osiągnąć dokładność 75\%, precyzję 69\% oraz recall 75\%. Pomimo nieco gorszych wyników niż dla kNN zastosowanie Naiwnego Klasyfikatora Bayesa ma tę przewagę że pozwala pokazać podobieństwo do wszystkich możliwych klas, co może być użyteczne w praktycznych zastosowaniach medycznych.\\
+
+\textbf{Selekcja i ekstrakcja cech}\\
+Nie miały sensu zastosowania ze względu na niewielkie rozmiary zbioru danych i dużą wydajność obliczeń.\\
+
+\textbf{Perceptron wielowarstwowy}\\
+Charakteryzował się niezwykle wysoką skutecznością klasyfikacji: dokładność 94\%, precyzja 95\% oraz recall 94\%. Dla mniejszej ilości epok jeszcze więcej ale optymalizator nie zakończył wtedy swojej pracy i była szansa na niemiarodajny wynik.\\
+
+\textbf{Sieć głęboka z funkcją aktywacji Softmax}\\
+Dokładność na zbliżonym poziomie co perceptron z tym że pozwala pokazać podobieństwo do wszystkich możliwych klas, co jak wspomniałem wyżej może mieć potencjalne zastosowanie w wykrywaniu bólów głowy o wielorakim pochodzeniu\\
+
+\subsection{Wnioski ogólne}
+Algorytmy uczenia maszynowego - zarówno sieci neuronowe jak i metody klasyfikacji mogą być przydatnym narzędziem w diagnostyce bólów głowy.\\
+
+Szczególnie efektywne są tu sieci neuronowe ze względu na wysoką dokładność i precyzję.\\
+
+Bez względu na wybrany algorytm warto zadbać o zbalansowany zbiór danych. Pozwoliło by to na większą pewność co do otrzymanych wyników.\\
+
+Pomimo iż nie posiadam wykształcenia medycznego a wiedza domenowa z dziedziny bólów głowy nie jest wiedzą akademicką przypuszczam że klasyfikacja wieloklasowa może być cenną wskazówką że prócz objawów dominujących warto jeszcze zwrócić uwagę na inne objawy bo jak pokazują badania dany pacjent nie musi być dotknięty tylko przez jeden rodzaj bólu głowy.

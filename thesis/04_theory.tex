@@ -1,5 +1,5 @@
-\section{Klasyfikacja}
-\subsection{Wstęp teoretyczny}
+\section{Wstęp teoretyczny}
+\subsection{Klasyfikacja}
 \subsubsection{Klasyfikator kNN (k-najbliższych sąsiadów) \cite{wyklad}}
 Klasyfikator kNN, ze względu na swoją intuicyjność, jest jednym z najpopularniejszych klasyfikatorów. Działa on zgodnie z regułą: obserwacja x zostaje sklasyfikowana do najliczniejszej klasy z pośród k obserwacji najbliższych punktowi x.\\
 
@@ -30,7 +30,7 @@ $C$ - oznacza zmienną zależną, będącą zbiorem etykiet klas\\
     P(h|D) = \frac{P(h) P(D|h)}{P(D)}
 \end{equation}
 
-oraz niezalezności warunkowej cech $F_i$ oraz $F_j$ dla $i \neq j$ otrzymujemy:
+oraz niezależności warunkowej cech $F_i$ oraz $F_j$ dla $i \neq j$ otrzymujemy:
 \begin{equation}
     P(F_i|C, F_j) = P(F_i|C)
 \end{equation}
@@ -108,4 +108,14 @@ rozłącznych i równolicznych części
 \end{enumerate}
 
 \subsubsection{Pozostałe podstawowe metryki}
-W pracy wykorzystano również: dokładność ($Accuracy$), precyzja ($Precision$), czułość ($Sensitivity$), specyficzność ($Specificity$) oraz predykcję klasy negatywnej ($Negative$ $Predictive$ $Value$). 
+W pracy wykorzystano również: dokładność (\textit{Accuracy}), precyzja (\textit{Precision}), czułość (\textit{Sensitivity}), specyficzność (\textit{Specificity}) oraz predykcję klasy negatywnej (\textit{Negative Predictive Value}). 
+
+\subsection{Sztuczne sieci neuronowe}
+\subsubsection{Perceptron wielowarstwowy}
+Perceptron wielowarstwowy (MLP, ang. \textit{Multi-Layer Perceptron}) jest podstawowym typem sztucznej sieci neuronowej, który składa się z co najmniej trzech warstw: warstwy wejściowej, jednej lub więcej warstw ukrytych oraz warstwy wyjściowej. Każdy neuron w jednej warstwie jest połączony z każdym neuronem w warstwie następnej, co umożliwia przetwarzanie skomplikowanych wzorców i zależności. W przeciwieństwie do prostego perceptronu jednopoziomowego, MLP jest zdolny do rozwiązywania problemów, które nie są liniowo separowalne. Proces uczenia w MLP opiera się na algorytmie wstecznej propagacji błędów, który minimalizuje błąd sieci poprzez dostosowanie wag połączeń między neuronami. Perceptrony wielowarstwowe są powszechnie stosowane w zadaniach takich jak klasyfikacja, regresja oraz rozpoznawanie wzorców. Ze względu na swoją elastyczność i moc obliczeniową, MLP stanowi fundament dla bardziej zaawansowanych struktur sieci neuronowych, takich jak sieci konwolucyjne i rekurencyjne. Jego zdolność do uczenia się nieliniowych relacji sprawia, że jest to narzędzie niezwykle użyteczne w szerokim zakresie zastosowań, od rozpoznawania obrazów po przetwarzanie języka naturalnego.
+
+\subsubsection{Sieci głębokie}
+Sieci głębokie (ang. Deep Neural Networks, DNN) to zaawansowane struktury sztucznych sieci neuronowych, które charakteryzują się dużą liczbą warstw ukrytych pomiędzy warstwą wejściową a wyjściową. Dzięki wielowarstwowej architekturze, sieci głębokie mogą modelować bardzo złożone i nieliniowe relacje w danych. Proces uczenia tych sieci wykorzystuje zaawansowane techniki, takie jak wsteczna propagacja błędów oraz optymalizatory gradientowe, które umożliwiają skuteczne dostosowanie wag neuronów. Sieci głębokie są niezwykle efektywne w zadaniach związanych z przetwarzaniem dużych ilości danych, takich jak rozpoznawanie obrazów, analiza dźwięku czy przetwarzanie języka naturalnego. Wprowadzenie warstw konwolucyjnych i rekurencyjnych w ramach sieci głębokich dodatkowo rozszerza ich możliwości, umożliwiając analizę sekwencji i wykrywanie istotnych wzorców w danych przestrzennych. Rozwój technologii sprzętowych, takich jak GPU, oraz technik takich jak dropout, znacząco przyczynił się do sukcesu i szerokiego zastosowania sieci głębokich. Dzięki swojej zdolności do automatycznego ekstraktowania cech i wysokiej dokładności predykcji, sieci głębokie stanowią fundament współczesnej sztucznej inteligencji i uczenia maszynowego.
+
+\subsubsection{Funkcja aktywacji softmax}
+Funkcja aktywacji softmax jest powszechnie stosowana w sieciach neuronowych, szczególnie w warstwach wyjściowych modeli klasyfikacyjnych, aby przekształcić surowe wartości wyjściowe neuronów w prawdopodobieństwa. Softmax przekształca wektor wartości rzeczywistych w wektor wartości, które sumują się do 1, co umożliwia interpretację wyniku jako rozkład prawdopodobieństwa między różnymi klasami. Wartości wyjściowe są eksponowane i następnie normalizowane, co podkreśla różnice między nimi i pomaga w dokładniejszej klasyfikacji. Dzięki swoim właściwościom, funkcja softmax jest idealna do zadań wieloklasowej klasyfikacji, gdzie model musi przypisać jedno z wielu możliwych oznaczeń do danego wejścia.
