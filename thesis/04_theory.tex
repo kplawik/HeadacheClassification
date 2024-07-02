@@ -1,7 +1,7 @@
 \section{Wstęp teoretyczny}
 \subsection{Klasyfikacja}
-\subsubsection{Klasyfikator kNN (k-najbliższych sąsiadów) \cite{wyklad}}
-Klasyfikator kNN, ze względu na swoją intuicyjność, jest jednym z najpopularniejszych klasyfikatorów. Działa on zgodnie z regułą: obserwacja x zostaje sklasyfikowana do najliczniejszej klasy z pośród k obserwacji najbliższych punktowi x.\\
+\subsubsection{Klasyfikator kNN (k-najbliższych sąsiadów)}
+Klasyfikator kNN \cite{wyklad}, ze względu na swoją intuicyjność, jest jednym z najpopularniejszych klasyfikatorów. Działa on zgodnie z regułą: obserwacja x zostaje sklasyfikowana do najliczniejszej klasy z pośród k obserwacji najbliższych punktowi x.\\
 
 Szacowane prawdopodobieństwo przynależności obserwacji ${x}$ do danej klasy wśród ${x}$ najbliższych sąsiadów, zapisujemy jako:
 
@@ -13,8 +13,8 @@ gdzie:\\
 ${x}^{(k)}$ - jest k-tym co do odległości ${x}$ punktem z próby uczącej\\
 $\rho$ - jest pewną odległością, określaną jako miara niepodobieństwa.
 
-\subsubsection{Naiwny Klasyfikator Bayesa \cite{wyklad}}
-Jest klasyfikatorem probabilistycznym, który opiera się na użyciu twierdzenia.
+\subsubsection{Naiwny Klasyfikator Bayesa}
+Jest klasyfikatorem probabilistycznym \cite{wyklad}, który opiera się na użyciu twierdzenia.
 
 \begin{equation}
 P(C|F_1, \ldots, F_n)
@@ -46,8 +46,8 @@ Zatem wynik działania naiwnego klasyfikatora bayesowskiego można zapisać jako
     \text{klasa}(f_1, \ldots, f_n) = \arg\max_c P(C = c) \prod_{i=1}^n P(F_i = f_i | C = c)
 \end{equation}
 
-\subsubsection{SVM - Maszyna Wektorów Nośnych \cite{svm_wiki} \cite{wyklad}}
-Maszyna Wektorów Nośnych (Maszyna Wektorów Wspierających) jest to abstrakcyjny koncept maszyny, która działa jak klasyfikator, a której nauka ma na celu wyznaczenie hiperpłaszczyzny rozdzielającej z maksymalnym marginesem przykłady należące do dwóch klas.\\
+\subsubsection{SVM - Maszyna Wektorów Nośnych}
+Maszyna Wektorów Nośnych (Maszyna Wektorów Wspierających) \cite{wyklad} jest to abstrakcyjny koncept maszyny, która działa jak klasyfikator, a której nauka ma na celu wyznaczenie hiperpłaszczyzny rozdzielającej z maksymalnym marginesem przykłady należące do dwóch klas. \cite{svm_wiki}\\
 
 Zadanie sprowadza się do znalezienia granicy decyzyjnej między klasami i związane jest z pojęciem separowalności liniowej, zgodnie z którym dwie klasy są liniowo separowalne, gdy istnieje hiperpłaszczyzna $H$ postaci $g(x)$ wyrażona równaniem:
 \begin{equation}
@@ -72,11 +72,10 @@ W rezultacie można uzyskać zbiór wielu możliwych rozwiązań (czyli hiperpł
 Powyższy rysunek przedstawia uproszczony schemat działania SVM - źródło: materiały wykładowe.
 
 \subsection{Ewaluacja modelu klasyfikacyjnego}
-\subsubsection{Macierz pomyłek \cite{wyklad}}
-Macierz pomyłek (błędów, ang. confusion matrix), inaczej określana mianem tablicy kontyngencji (ang. contingency table). prezentuje liczby przypadków należących do poszczególnych poprawnych klas decyzyjnych oraz tych, które są przewidywane.\\
+\subsubsection{Macierz pomyłek}
+Macierz pomyłek (błędów, ang. confusion matrix) \cite{wyklad}, inaczej określana mianem tablicy kontyngencji (ang. contingency table). prezentuje liczby przypadków należących do poszczególnych poprawnych klas decyzyjnych oraz tych, które są przewidywane.\\
 
 W przypadku wielu etykiet macierz pomyłek jest macierzą kwadratowa m x m:\\
-
 
 \begin{table}[h!]
     \centering

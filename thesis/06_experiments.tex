@@ -15,22 +15,6 @@ y_pred = knn.predict(X_test)
 \subsubsection{Wyniki}
 Podstawowe metryki dla pierwszego eksperymentu wynosiły precyzja (\textit{Precision}): 0.85 a dokładność (\textit{Accuracy}): 0.7875. Co nie stanowi wiele informacji, korzystam więc z gotowych metryk dostępnych w bibliotece scikit-learn:\\
 
-\begin{lstlisting}[caption=Szczegółowa tabela walidacji]
-                            precision recall f1-score support
-
-            Basilar-type aura    1.00   0.29     0.44      7
- Familial hemiplegic migraine    0.50   0.80     0.62      5
-        Migraine without aura    0.62   0.62     0.62      8
-                        Other    1.00   0.67     0.80      3
- Sporadic hemiplegic migraine    0.00   0.00     0.00      4
-   Typical aura with migraine    0.82   0.94     0.88     49
-Typical aura without migraine    1.00   1.00     1.00      4
-
-                     accuracy                    0.79     80
-                    macro avg    0.71   0.62     0.62     80
-                 weighted avg    0.77   0.79     0.76     80
-\end{lstlisting}
-
 \begin{verbatim}
                              precision  recall f1-score support
 
