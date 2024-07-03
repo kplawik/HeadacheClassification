@@ -1,7 +1,7 @@
 \section{Techniki SHAP i LIME}
 Zagadnienia uczenia maszynowego postrzegane są niekiedy jako tzw. czarne skrzynki. Przekonanie to wzięło się z tego że, o ile prostsze modele są łatwo interpretowalne dla człowieka, o tyle te bardziej skomplikowane nie dają już żadnych wskazówek jakie cechy okazały się być decydujące jeśli chodzi o podjęte przez wybrany algorytm decyzje. Z pomocą przychodzą nam techniki SHAP i LIME. Pozwalaja one na przybliżoną ocenę które z cech miały wpływ na wynik klasyfikacji.\\
 
-\subsection{SHAP}
+\subsection{SHAP (SHapley Additive exPlanations)}
 
 \subsection{LIME (Local Interpretable Model-agnostic Explanations)}
 
@@ -15,11 +15,11 @@ Matematycznie, lokalne modele zastępcze z ograniczeniem interpretowalności mo�
     {explanation}(x) = \arg\min_{g \in G} L(f, g, \pi_x) + \Omega(g)
 \end{equation}
 
-Model wyjaśniający dla instancji \( x \) to model \( g \) (np. model regresji liniowej), który minimalizuje stratę \( L \) (np. błąd średniokwadratowy), mierząc jak blisko wyjaśnienie jest do przewidywania oryginalnego modelu \( f \) (np. model xgboost), przy jednoczesnym zachowaniu niskiej złożoności modelu \( \Omega(g) \) (np. preferowanie mniejszej liczby cech). \( G \) to rodzina możliwych wyjaśnień, na przykład wszystkie możliwe modele regresji liniowej. Miara bliskości \( \pi_x \) definiuje, jak duże sąsiedztwo wokół instancji \( x \) rozważamy dla wyjaśnienia. W praktyce LIME optymalizuje tylko część straty. Użytkownik musi określić złożoność, np. wybierając maksymalną liczbę cech, które może użyć model regresji liniowej.\\
+Model wyjaśniający dla instancji \( x \) to model \( g \) (np. model regresji liniowej), który minimalizuje stratę \( L \) (np. błąd średniokwadratowy), mierząc jak blisko wyjaśnienie jest do przewidywania oryginalnego modelu \( f \) (np. model xgboost), przy jednoczesnym zachowaniu niskiej złożoności modelu \( \Omega(g) \) (np. preferowanie mniejszej liczby cech). \( G \) to rodzina możliwych wyjaśnień, na przykład wszystkie możliwe modele regresji liniowej. Miara bliskości \( \pi_x \) definiuje, jak duże sąsiedztwo wokół instancji \( x \) rozważamy dla wyjaśnienia. W praktyce LIME optymalizuje tylko część straty. Użytkownik musi określić złożoność, np. wybierając maksymalną liczbę cech, które może użyć model regresji liniowej. \cite{lime}\\
 
 LIME może być stosowany zarówno dla danych tabelarycznych, obrazów oraz tekstu.\\
 
-\subsubsection{LIME dla danych tabelarycznych i klasyfikacji wieloklasowej}
+\subsection{LIME dla danych tabelarycznych i klasyfikacji wieloklasowej}
 
 Dane tabelaryczne to dane przedstawione w tabelach, gdzie każdy wiersz reprezentuje jedną instancję, a każda kolumna - cechę. Próbki LIME nie są pobierane wokół interesującej instancji, lecz z centralnej masy danych treningowych, co jest problematyczne. Jednakże zwiększa to prawdopodobieństwo, że wynik dla niektórych punktów próbki będzie różnił się od punktu danych, który nas interesuje (instancji), i że LIME będzie w stanie przynajmniej w pewnym stopniu wyjaśnić wynik klasyfikacji.\\
 

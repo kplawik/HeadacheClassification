@@ -57,12 +57,12 @@ Typical aura without migraine    1.00    0.60     0.75       5
 
 Ogólna wartość precyzji (\textit{Precision}) dla całego zbioru testowego pozostała na poziomie 85\%. Dokładność ($Accuracy$) na zbioru testowego spadła o 3,75 punktu procentowego (do poziomu 75\%).\\
 
-W przypadku walidacji krzyzowej precyzja wahała się pomiędzy 57 a 100\% (w stosunku do poprzedniego podziału nieznaczne wzrosty w przypadku mniej licznych klas). Recall charakteryzował się duzym rozrzutem wartości - mniej liczne klasy miały recall niekiedy i 0-12\% a te bardziej liczne 80-90\%.\\
+W przypadku walidacji krzyżowej precyzja wahała się pomiędzy 57 a 100\% (w stosunku do poprzedniego podziału nieznaczne wzrosty w przypadku mniej licznych klas). Recall charakteryzował się duzym rozrzutem wartości - mniej liczne klasy miały recall niekiedy i 0-12\% a te bardziej liczne 80-90\%.\\
 
-Średnia wartość recallu to 51\% a średnia wazona 75\% (ta właśnie uwzględniała nierówną liczebność klas). Podobna różnica miała miejsce w przypadku precyzji wyliczonej przy zastosowaniu walidacji krzyzowej - średnia wartość 71\% - średnia wazona 75\%.\\
+Średnia wartość recallu to 51\% a średnia ważona 75\% (ta właśnie uwzględniała nierówną liczebność klas). Podobna różnica miała miejsce w przypadku precyzji wyliczonej przy zastosowaniu walidacji krzyżowej - średnia wartość 71\% - średnia wazona 75\%.\\
 
 \subsection{Klasyfikacja Naiwnym Klasyfikatorem Bayesa}
-W eksperymencie tym sprawdziłem wyniki klasyfikacji Naiwnym Klasyfikatorem Bayesa. Biblioteka scikit-learn umozliwia przeprowadzenie tzn \textit{Categorical Classication (Categorical Naive Bayes)} gdzie w przeciwieństwie do popularnej klasyfikacji binarnej, metoda jest w stanie zwrócić dwie informacje: etykietę klasy będącej wynikiem klasyfikacji oraz listę ze stopniami podobieństwa dla wszystkich klas.\\
+W eksperymencie tym sprawdziłem wyniki klasyfikacji Naiwnym Klasyfikatorem Bayesa. Biblioteka scikit-learn umożliwia przeprowadzenie tzn \textit{Categorical Classication (Categorical Naive Bayes)} gdzie w przeciwieństwie do popularnej klasyfikacji binarnej, metoda jest w stanie zwrócić dwie informacje: etykietę klasy będącej wynikiem klasyfikacji oraz listę ze stopniami podobieństwa dla wszystkich klas.\\
 
 \begin{lstlisting}[language=Python, caption=Definicja i uzycie CategoricalNB]
 from sklearn.naive_bayes import CategoricalNB
@@ -249,9 +249,9 @@ NN Accuracy =  0.96
 \end{verbatim}
 
 \subsection{Sieć głęboka z funkcją aktywacji Softmax}
-Perceptron wielowarstwowy choć dawał świetne wyniki to jednak dawał wynik przynależności do najbardziej prawdopodobnej klasy. W zagadnieniu klasyfikacji bólów głowy interesującym byłoby pokazać wynik w postać stopnia podobieństwa przynależności do każdej z mozliwych klas. Z pomocą przychodzi nam funkcja aktywacji Softmax i możliwość zastosowania jej w głębokich sieciach neuronowych.\\
+Perceptron wielowarstwowy choć dawał świetne wyniki to jednak dawał wynik przynależności do najbardziej prawdopodobnej klasy. W zagadnieniu klasyfikacji bólów głowy interesującym byłoby pokazać wynik w postać stopnia podobieństwa przynależności do każdej z możliwych klas. Z pomocą przychodzi nam funkcja aktywacji Softmax i możliwość zastosowania jej w głębokich sieciach neuronowych.\\
 
-W przypadku funkcji aktywacji Softmax konieczne jest uzycie enkodera etykiet klas - czy zamianę etykiet na przyporządkowane im liczby. Następnie w/w liczby zamieniamy na tzw. format hot-one czyli format gdzie danej liczbie przyporządkowujemy ciąg binarny zer oraz jednej jedynki w miejscu w szeregu odpowiadającym danej liczbie. Po testowej klasyfikacji musimy nasze wyniki zdekodować z powrotem do formatu etykiet. Wszystkie te operacje umozliwia nam biblioteka scikit-learn.\\
+W przypadku funkcji aktywacji Softmax konieczne jest uzycie enkodera etykiet klas - czy zamianę etykiet na przyporządkowane im liczby. Następnie w/w liczby zamieniamy na tzw. format hot-one czyli format gdzie danej liczbie przyporządkowujemy ciąg binarny zer oraz jednej jedynki w miejscu w szeregu odpowiadającym danej liczbie. Po testowej klasyfikacji musimy nasze wyniki zdekodować z powrotem do formatu etykiet. Wszystkie te operacje umożliwia nam biblioteka scikit-learn.\\
 
 Do definicji sieci głębokiej uzywam biblioteki TensorFlow i jej części Keras.
 \begin{lstlisting}[language=Python, caption=Definicja sieci głębokiej z funkcją aktywacji Softmax]
@@ -330,3 +330,82 @@ a drugi z nich wyświetlał tabelę: enkodowana etykieta klasy, pełna etykieta 
     6  Typical aura without migraine           0.00
     2          Migraine without aura           0.00
 \end{verbatim}
+
+\subsection{Prezentacja możliwości technik LIME}
+Techniki LIME zastosowano dla klasyfikacji Naiwnym Klasyfikatorem Bayesa. Ze względu na brak możliwości zastosowania normalizacji wyniki pracy z LIME prezentuje w osobnym podrozdziale jak i obliczenia przeprowadzono w osobnym arkuszu Jupytera.\\
+
+\textbf{Przykład pierwszy: o niejednoznacznym rozkładzie podobieństw.}\\
+\noindent W przykładzie widzimy niejednoznaczną klasyfikację. Najbardziej prawdopodobny wynik to "Typical aura with migraine" (59\%), drugi "Migraine without aura" (36\%). Listę klas z prawdopodobieństwami widzimy po lewej stronie wykresu rys. \ref{fig:lime_ex_1a}. Po środku niezbyt widoczny wykres wpływu cech na wynik. O tym szczegółowo poniżej. Po lewej stronie tabela z cechami i ich wartościami - uszeregowana wg istotności wpływu na wynik klasyfikacji. Wartości nie są znormalizowane co pokazuje np. wartość cechy Wiek ("Age").\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{lime_ex_1a}
+    \caption{Zbiorcza prezentacja wyników LIME}
+    \label{fig:lime_ex_1a}
+\end{figure}
+
+Poniżej bardziej czytelna wersja tabeli wpływu cech. Na osi poziomej widzimy orientacyjną wartość na cecha ta wpływała na wynik - zarówno jeśli cecha świadczyła za przynależnością do klasy (wartości dodatnie oznaczone na zielono) jak i wpływ cech przeciw klasyfikacji (ujemne wartości oznaczone na czerwono).\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{lime_ex_1b}
+    \caption{Szczegółowy rozkład wpływu cech na wynik}
+    \label{fig:lime_ex_1b}
+\end{figure}
+
+W powyższym przykładzie widzimy że dwie najbardziej wpływowe cechy (charakter i lokalizacja) mogą świadczyć o przynależności wyniku do innej klasy a za klasyfikacją przemawia cecha nr 3 czyli intensywność bólu.\\
+
+Pełne wyniki klasyfikacji algorytmem NKB prezentowały się zgodnie z wykresem z biblioteki LIME:
+
+\begin{verbatim}
+49 : Typical aura with migraine
+0.0012638281303840333: 	Basilar-type aura
+0.0059846389830973635: 	Familial hemiplegic migraine
+0.363060881204291: 	    Migraine without aura
+0.008800972062708684:   Other
+0.032507610772455765:   Sporadic hemiplegic migraine
+0.5883775288337598:     Typical aura with migraine
+4.540013303382296e-06:  Typical aura without migraine
+\end{verbatim}
+
+\textbf{Przykład drugi: o jednoznacznym rozkładzie podobieństw.}\\
+W drugim przykładzie przeanalizowano przykład o mocno jednoznacznym rozkładzie podobieństw (99\%).\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{lime_ex_2a}
+    \caption{Zbiorcza prezentacja wyników LIME - 2}
+    \label{fig:lime_ex_2a}
+\end{figure}
+
+Tutaj pierwsze cztery najbardziej dominujące cechy potwierdzają przynależność do klasy. Trzy kolejne poddają wynik pod wątpliwość.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{lime_ex_2b}
+    \caption{Szczegółowy rozkład wpływu cech na wynik - 2}
+    \label{fig:lime_ex_2b}
+\end{figure}
+
+Prawdopodobieństwo potwierdzone przez wyniki NKB.\\
+
+\textbf{Przykład trzeci: o jednoznacznym rozkładzie podobieństw.}\\
+W drugim przykładzie przeanalizowano przykład o mocno jednoznacznym rozkładzie podobieństw (96\%).\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{lime_ex_3a}
+    \caption{Zbiorcza prezentacja wyników LIME - 3}
+    \label{fig:lime_ex_3a}
+\end{figure}
+
+Wynik jest o tyle interesujący że pomimo mocno jednoznacznej klasyfikacji aż dziewięć najbardziej dominujących klas sugeruje że instancja może należeć do innej klasy. W realnym przypadku taki wynik powinien być szczegółowo przeanalizowany przez osobę z ekspercką wiedzą domenową.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{lime_ex_3b}
+    \caption{Szczegółowy rozkład wpływu cech na wynik - 3}
+    \label{fig:lime_ex_3b}
+\end{figure}
+
+Prawdopodobieństwo potwierdzone przez wyniki NKB.\\
