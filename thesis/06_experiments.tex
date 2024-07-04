@@ -1,70 +1,59 @@
 \section{Eksperymenty}
-\subsection{Klasyfikacja kNN przy podziale zbioru 80:20}
+\subsection{Klasyfikacja kNN - dobór liczby sąsiadów}
+Dobór liczby sąsiadów dla algorytmu kNN jest bardzo istotny. Zbyt mała liczba sąsiadów może powodować zbytnie dopasowanie do danych, zbyt duża - negatywnie wpłynie na wartości dokładności i precyzji.\\
+
+W celu optymalnego doboru k posłurzę się średnią wartością dokładności z wykorzystaniem kroswalidacji (o podziale zbioru na 10). Następnie rysuję wykres średniej dokładności w zależności od liczby sąsiadów:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{knn_n}
+    \caption{Wykres średniej dokładności walidacji krzyżowej}
+    \label{fig:knn_n}
+\end{figure}
+
+Z obawy o zbytnie dopasowanie wybieram liczbę sąsiadów równą 3.
+
+\subsection{Klasyfikacja kNN }
 W przeprowadzonym eksperymencie dokonano podziału zbioru 80:20 (20 procent danych testowych). Następnie zdefiniowano klasyfikator z parametrem n\_neighbors równym 5. Kolejnym krokiem było wytrenowanie klasyfikatora i przeprowadzenie predykcji na zbiorze testowym:\\
 
-\begin{lstlisting}[language=Python, caption=Definicja i uzycie kNN]
+\begin{lstlisting}[language=Python, caption=Definicja i użycie kNN]
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 
-knn = KNeighborsClassifier(n_neighbors=5)
+knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(X_train, y_train)
+score = cross_val_score(knn, X_train, y_train, cv=10, scoring='accuracy')
 
 y_pred = knn.predict(X_test)
 \end{lstlisting}
 
 \subsubsection{Wyniki}
-Podstawowe metryki dla pierwszego eksperymentu wynosiły precyzja (\textit{Precision}): 0.85 a dokładność (\textit{Accuracy}): 0.7875. Co nie stanowi wiele informacji, korzystam więc z gotowych metryk dostępnych w bibliotece scikit-learn:\\
+Podstawowe metryki dla pierwszego eksperymentu wynosiły precyzja (\textit{Precision}): 0.90 a dokładność (\textit{Accuracy}): 0.7625. Średnia dokładność z użyciem walidacji krzyżowej (z podziałem zbioru testowego na 10) 0.803125. Co nie stanowi wiele informacji, korzystam więc z gotowych metryk dostępnych w bibliotece scikit-learn:\\
 
 \begin{verbatim}
-                             precision  recall f1-score support
+                             precision   recall f1-score  support
 
-            Basilar-type aura     1.00    0.29     0.44       7
- Familial hemiplegic migraine     0.50    0.80     0.62       5
-        Migraine without aura     0.62    0.62     0.62       8
-                        Other     1.00    0.67     0.80       3
- Sporadic hemiplegic migraine     0.00    0.00     0.00       4
-   Typical aura with migraine     0.82    0.94     0.88      49
-Typical aura without migraine     1.00    1.00     1.00       4
+            Basilar-type aura     0.67     0.29     0.40        7
+ Familial hemiplegic migraine     0.43     0.60     0.50        5
+        Migraine without aura     0.71     0.62     0.67        8
+                        Other     1.00     0.33     0.50        3
+ Sporadic hemiplegic migraine     0.00     0.00     0.00        4
+   Typical aura with migraine     0.81     0.96     0.88       49
+Typical aura without migraine     1.00     0.75     0.86        4
 
-                     accuracy                      0.79      80
-                    macro avg     0.71    0.62     0.62      80
-                 weighted avg     0.77    0.79     0.76      80
+                     accuracy                       0.76       80
+                    macro avg     0.66     0.51     0.54       80
+                 weighted avg     0.74     0.76     0.73       80
 \end{verbatim}
 
-Jak widzimy na powyższym listingu (i o czym również informuje nas warning biblioteki scikit-learn) klasa Sporadic hemiplegic migraine nie wystąpiła w zbiorze testowym ani razu. Zbiór nie jest ani specjalnie liczny ani tez zbalansowany wiec sytuacja taka jest jest zaskoczeniem ale nie przestaje to podważać efektywności walidacji naszych badań. W kolejnym eksperymencie przedstawiam za to inne proporcje podziały zbioru.
+W przypadku walidacji dla poszczególnych klas precyzja wahała się pomiędzy 43 a 100\%. Recall charakteryzował się dużym rozrzutem wartości - mniej liczne klasy miały recall niekiedy i 0-29\% a te bardziej liczne 75-96\%.\\
 
-\subsection{Klasyfikacja kNN przy podziale zbioru 75:25}
-Przebieg eksperymentu był dokładnie taki sam jak w poprzednim z tym że podział zbioru na dane uczące i testowe dokonał się w proporcjach 75:25 (tak jak poprzednio ze sztuczną losowością aby zapewnić powtarzalność wyników).\\
-
-\subsubsection{Wyniki}
-Zmiana podziału zbioru nie wpłynęła zasadniczo na wartość precyzji i dokładności ale nie istniał juz problem braku klas w zbiorze testowym, co nie przekreśla juz sensowności przeprowadzonych obliczeń. Nadal jednak zaden z obiektów klasy "Sporadic hemiplegic migraine" nie został poprawnie rozpoznany co dalej, dla tego podzbioru klas zarówno precyzje jak i recall równe zero.\\
-
-\begin{verbatim}
-                            precision  recall f1-score support
-
-            Basilar-type aura    1.00    0.12     0.22       8
- Familial hemiplegic migraine    0.57    0.80     0.67       5
-        Migraine without aura    0.64    0.64     0.64      11
-                        Other    1.00    0.50     0.67       4
- Sporadic hemiplegic migraine    0.00    0.00     0.00       5
-   Typical aura with migraine    0.77    0.94     0.85      62
-Typical aura without migraine    1.00    0.60     0.75       5
-
-                     accuracy                     0.75     100
-                    macro avg    0.71    0.51     0.54     100
-                 weighted avg    0.75    0.75     0.71     100
-\end{verbatim}
-
-Ogólna wartość precyzji (\textit{Precision}) dla całego zbioru testowego pozostała na poziomie 85\%. Dokładność ($Accuracy$) na zbioru testowego spadła o 3,75 punktu procentowego (do poziomu 75\%).\\
-
-W przypadku walidacji krzyżowej precyzja wahała się pomiędzy 57 a 100\% (w stosunku do poprzedniego podziału nieznaczne wzrosty w przypadku mniej licznych klas). Recall charakteryzował się duzym rozrzutem wartości - mniej liczne klasy miały recall niekiedy i 0-12\% a te bardziej liczne 80-90\%.\\
-
-Średnia wartość recallu to 51\% a średnia ważona 75\% (ta właśnie uwzględniała nierówną liczebność klas). Podobna różnica miała miejsce w przypadku precyzji wyliczonej przy zastosowaniu walidacji krzyżowej - średnia wartość 71\% - średnia wazona 75\%.\\
+Średnia wartość recallu to 51\% a średnia ważona 76\% (ta właśnie uwzględniała nierówną liczebność klas). Podobna różnica miała miejsce w przypadku precyzji wyliczonej dla poszczególnych klas - średnia wartość 66\% - średnia ważona 74\%.\\
 
 \subsection{Klasyfikacja Naiwnym Klasyfikatorem Bayesa}
 W eksperymencie tym sprawdziłem wyniki klasyfikacji Naiwnym Klasyfikatorem Bayesa. Biblioteka scikit-learn umożliwia przeprowadzenie tzn \textit{Categorical Classication (Categorical Naive Bayes)} gdzie w przeciwieństwie do popularnej klasyfikacji binarnej, metoda jest w stanie zwrócić dwie informacje: etykietę klasy będącej wynikiem klasyfikacji oraz listę ze stopniami podobieństwa dla wszystkich klas.\\
 
-\begin{lstlisting}[language=Python, caption=Definicja i uzycie CategoricalNB]
+\begin{lstlisting}[language=Python, caption=Definicja i użycie CategoricalNB]
 from sklearn.naive_bayes import CategoricalNB
 
 gnb = CategoricalNB()
@@ -73,7 +62,7 @@ y_pred = gnb.fit(X_train, y_train).predict(X_test)
 \end{lstlisting}    
 
 \subsubsection{Wyniki}
-O ile wyniki dokładności (\textit{Accuracy}) wyglądały podobnie niz dla np. kNN - dokładnie 75\%. O tyle wyniki dla całości zbiory prezentowały się gorzej o 5-6 punktów procentowych niz dla kNN - precyzja średnia 64\% (względem 71\%) oraz precyzja wazona 69\% (względem 75\%). Wyniki dla poszczególnych klas dla precyzji potrafiły się różnić o 20-30 punktów procentowych względem kNN nie dając wyraźniej korelacji względem liczebności klas. Wyniki dla recall po trafiły być niekiedy diametralnie różne - 88\%-12\% a niekiedy znikomo - 92\%-94\% względem kNN.\\
+O ile wyniki dokładności (\textit{Accuracy}) wyglądały podobnie niz dla np. kNN - dokładnie 75\%. O tyle wyniki dla całości zbiory prezentowały się gorzej o 5-6 punktów procentowych niz dla kNN - precyzja średnia 64\% (względem 66\%) oraz precyzja wazona 69\% (względem 74\%). Wyniki dla poszczególnych klas dla precyzji potrafiły się różnić o 20-30 punktów procentowych względem kNN nie dając wyraźniej korelacji względem liczebności klas. Wyniki dla recall po trafiły być niekiedy diametralnie różne - 88\%-12\% a niekiedy znikomo - 92\%-96\% względem kNN.\\
 
 \begin{verbatim}
                               precision  recall  f1-score   support
@@ -181,7 +170,7 @@ Wyniki prezentowały się następująco:
 
 Co interesujące to właśnie dyskusyjny eksperyment klasyfikacji KNN z selekcją RFE poprawił wynik dla kNN o 8 punktów procentowych a np. SKB pogorszył go o dwa. W przypadku klasyfikatora SVC w/w metody albo nie zmieniły wyniku (RFE) albo pogorszyły wynik od 8-10 punktów procentowych.\\
 
-Uzyty zbiór nie był zbiorem licznym ani tez obliczenia na nim wykonywane nie wymagały duzych mocy obliczeniowych. Nie istniało zatem zadne uzasadnienie stosowania którejkolwiek z w/w metod poniewaz przy praktycznie zerowej optymalizacji otrzymywaliśmy gorsze wyniki.\\
+Użyty zbiór nie był zbiorem licznym ani tez obliczenia na nim wykonywane nie wymagały dużych mocy obliczeniowych. Nie istniało zatem żadne uzasadnienie stosowania którejkolwiek z w/w metod ponieważ przy praktycznie zerowej optymalizacji otrzymywaliśmy gorsze wyniki.\\
 
 \subsection{Perceptron wielowarstwowy}
 Kolejnym z przeprowadzonych eksperymentów było użycie perceptronu wielowarstwowego. Podział zbioru to 75\% na dane treningowe i 25\% na dane testowe. Ponownie wykorzystaliśmy bibliotekę scikit-learn:
@@ -209,7 +198,7 @@ Wyjaśnienie wykorzystanych parametrów:
 \end{enumerate}
 
 \subsubsection{Wyniki}
-Wyniki działania perceptronu okazały się zaskakująco dobre. Przy relatywnie niskiej ilości warstw ukrytych (6), przeciętnej ilości epok (50000) i popularnym optymalizatorze ("adam") osiągnęliśmy dokładność (Accuracy) na poziomie 94\% i średnią ważoną precyzję 95\%. Recall wahał się od 60\% do 100\% (przy średniej wazonej wartości 94\%) a współczynnik F1 od 75\% do 100\% (przy średniej ważonej wartości 93\%).\\
+Wyniki działania perceptronu okazały się zaskakująco dobre. Przy relatywnie niskiej ilości warstw ukrytych (6), przeciętnej ilości epok (50000) i popularnym optymalizatorze ("adam") osiągnęliśmy dokładność (Accuracy) na poziomie 94\% i średnią ważoną precyzję 95\%. Recall wahał się od 60\% do 100\% (przy średniej ważonej wartości 94\%) a współczynnik F1 od 75\% do 100\% (przy średniej ważonej wartości 93\%).\\
 \begin{verbatim}
                               precision  recall f1-score  support
 
@@ -228,7 +217,7 @@ Typical aura without migraine      1.00    1.00     1.00        5
 NN Accuracy =  0.94
 \end{verbatim}
 
-Przy mniejszej ilości epok (5000) takiej samej ilości warstw ukrytych (6) i tym samym optymalizatorze ("adam") osiągnęliśmy dokładność (Accuracy) na poziomie 96\% i średnią ważoną precyzję 97\%. Recall wahał się od 60\% do 100\% a współczynnik F1 od 75\% do 100\% (przy średniej wazonej wartości 96\%) z tym że biblioteka wyświetliła ostrzeżenie że optymalizator nie zakończył działania więc wyniki mogę byś nieoptymalne.\\
+Przy mniejszej ilości epok (5000) takiej samej ilości warstw ukrytych (6) i tym samym optymalizatorze ("adam") osiągnęliśmy dokładność (Accuracy) na poziomie 96\% i średnią ważoną precyzję 97\%. Recall wahał się od 60\% do 100\% a współczynnik F1 od 75\% do 100\% (przy średniej ważonej wartości 96\%) z tym że biblioteka wyświetliła ostrzeżenie że optymalizator nie zakończył działania więc wyniki mogę byś nieoptymalne.\\
 
 \begin{verbatim}
                               precision  recall f1-score  support
@@ -253,7 +242,7 @@ Perceptron wielowarstwowy choć dawał świetne wyniki to jednak dawał wynik pr
 
 W przypadku funkcji aktywacji Softmax konieczne jest uzycie enkodera etykiet klas - czy zamianę etykiet na przyporządkowane im liczby. Następnie w/w liczby zamieniamy na tzw. format hot-one czyli format gdzie danej liczbie przyporządkowujemy ciąg binarny zer oraz jednej jedynki w miejscu w szeregu odpowiadającym danej liczbie. Po testowej klasyfikacji musimy nasze wyniki zdekodować z powrotem do formatu etykiet. Wszystkie te operacje umożliwia nam biblioteka scikit-learn.\\
 
-Do definicji sieci głębokiej uzywam biblioteki TensorFlow i jej części Keras.
+Do definicji sieci głębokiej używam biblioteki TensorFlow i jej części Keras.
 \begin{lstlisting}[language=Python, caption=Definicja sieci głębokiej z funkcją aktywacji Softmax]
 model=tf.keras.models.Sequential()
 model.add(tf.keras.layers.Dense(64, activation='relu'))
