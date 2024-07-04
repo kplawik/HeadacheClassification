@@ -331,7 +331,7 @@ a drugi z nich wyświetlał tabelę: enkodowana etykieta klasy, pełna etykieta 
     2          Migraine without aura           0.00
 \end{verbatim}
 
-\subsection{Prezentacja możliwości technik LIME}
+\subsection{Prezentacja możliwości technik LIME dla NKB}
 Techniki LIME zastosowano dla klasyfikacji Naiwnym Klasyfikatorem Bayesa. Ze względu na brak możliwości zastosowania normalizacji wyniki pracy z LIME prezentuje w osobnym podrozdziale jak i obliczenia przeprowadzono w osobnym arkuszu Jupytera.\\
 
 \textbf{Przykład pierwszy: o niejednoznacznym rozkładzie podobieństw.}\\
@@ -409,3 +409,128 @@ Wynik jest o tyle interesujący że pomimo mocno jednoznacznej klasyfikacji aż 
 \end{figure}
 
 Prawdopodobieństwo potwierdzone przez wyniki NKB.\\
+
+\subsection{Prezentacja możliwości technik SHAP dla NKB}
+Techniki SHAP zastosowano również dla klasyfikacji Naiwnym Klasyfikatorem Bayesa. Zachowano taki sam podział zbioru i analizowano dokładnie taki sam zbiór testowy (w tym też konkretne przypadki). Tym razem również nie zastosowano normalizacji choć dla SHAP można ją stosować - zachowano te same warunki aby porównać wyniki.\\
+
+\begin{lstlisting}[language=Python, caption=Definicja explainera dla SHAP]
+# Funkcja predykcyjna modelu
+def predict_proba(X):
+    return gnb.predict_proba(X)
+
+# Tworzenie wyjasniacza KernelExplainer
+explainer = shap.KernelExplainer(predict_proba, X_train)
+
+# Wybor jednej instancji ze zbioru testowego
+instance = X_test.iloc[0].values.reshape(1, -1)
+
+# Obliczanie wartosci SHAP dla wybranej instancji
+shap_values = explainer.shap_values(instance)
+
+# Tworzenie wykresu typu waterfall dla wybranej instancji i pierwszej klasy
+shap.waterfall_plot(shap.Explanation(values=shap_values[0][0], 
+                                base_values=explainer.expected_value[0], 
+                                data=instance[0], 
+                                feature_names=df.columns))
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{shap_b_01}
+    \caption{Wpływ cech wg SHAP dla NKB}
+    \label{fig:shap_b_01}
+\end{figure}
+Dla porównanie przypomnienie wykresu dla LIME:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lime_ex_1b}
+\end{figure}
+
+Widzimy częściową zgodność cech. Kolejność jak ich wartości wpływu są już praktycznie zupełnie różne.\\
+
+Podobną sytuację obserwujemy dla pozostałych przypadków:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{shap_b_02}
+    \caption{Wpływ cech wg SHAP dla NKB - 2}
+    \label{fig:shap_b_02}
+\end{figure}
+Dla porównanie przypomnienie wykresu dla LIME:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lime_ex_2b}
+\end{figure}
+
+Kolejny przykład:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{shap_b_03}
+    \caption{Wpływ cech wg SHAP dla NKB - 3}
+    \label{fig:shap_b_03}
+\end{figure}
+Dla porównanie przypomnienie wykresu dla LIME:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lime_ex_3b}
+\end{figure}
+
+
+\subsection{Prezentacja możliwości technik SHAP dla sieci głębokiej}
+Techniki SHAP zastosowano też dla głębokiej sieci neuronowej. Pomimo zastosowania takiego samego podziału zbioru i dokładnie takiego samego zbioru testowego (w tym już konkretnych przypadków) wyniki znacznie różniły się od wyników dla LIME.\\
+
+Definicja "wyjaśniacza" jest tutaj nieco trudniejsza niż dla LIME i nieco mniej intuicyjna (choćby przez konieczność dwukrotnej definicji numeru interpretowanej instancji):
+
+\begin{lstlisting}[language=Python, caption=Definicja explainera dla SHAP - 2]
+# Tworzenie wyjasniacza KernelExplainer
+explainer = shap.KernelExplainer(predict, X_train)
+    
+# Obliczanie wartosci SHAP dla przykladowych danych
+shap_values = explainer.shap_values(X_test[0:1])  # X_test to dane testowe, wybieramy przyklad 0
+    
+# Tworzenie obiektu Explanation z etykietami cech
+explanation = shap.Explanation(values=shap_values[0][0], 
+                           base_values=explainer.expected_value[0], 
+                           data=X_test[0],
+                           feature_names=df.columns)
+    
+# Wyswietlanie wykresu wodospadowego
+shap.waterfall_plot(explanation)
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{shap_d_01}
+    \caption{Wpływ cech wg SHAP dla sieci}
+    \label{fig:shap_d_01}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{shap_d_02}
+    \caption{Wpływ cech wg SHAP dla sieci - 2}
+    \label{fig:shap_d_02}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{shap_d_03}
+    \caption{Wpływ cech wg SHAP dla sieci - 3}
+    \label{fig:shap_d_03}
+\end{figure}
+
+Powyższe wykresy to tzw. wykresy wodospadowe.\\
+\noindent\textbf{Oś Y - Cechy} - Lista cech (np. Vertigo, Hypoacusis, Conscience) znajduje się po lewej stronie wykresu. Każda cecha ma przypisaną wartość z danych wejściowych (np. 0 = Vertigo).\\
+\noindent\textbf{Oś X - Wartości SHAP} - Oś X przedstawia wartości SHAP, które pokazują wpływ każdej cechy na końcową przewidywaną wartość modelu. Wartości SHAP są liczbami, które mogą być dodatnie lub ujemne.\\
+
+\textbf{Kolory:}\\
+\noindent\textbf{Niebieski:} Negatywny wpływ na przewidywanie (obniżają wartość przewidywaną przez model).\\
+\noindent\textbf{Czerwony:} Pozytywny wpływ na przewidywanie (zwiększają wartość przewidywaną przez model).\\
+
+Wartości SHAP pokazują, jak poszczególne cechy wpływają na wynik przewidywany przez model.
+Cechy z największymi wartościami SHAP (pozytywnymi lub negatywnymi) mają największy wpływ na decyzję modelu.
+Wartość bazowa reprezentuje średnią przewidywaną wartość na podstawie danych treningowych, a przewidywana wartość f(x) pokazuje, jak daleko od tej średniej znajduje się przewidywanie dla konkretnego przykładu.\\
+
+W Przypadku LIME cechami dominującymi zwykle były Character, Location, Duation, Intensity czy Age. Dla SHAP dominuje Vertigo, Tinnitus, Visual czy Vomit. Ze względu na różne algorytmy decyzyjne (Naiwny Klasyfikator Bayesa i Głęboka Sieć Neuronowa) porównanie wyników obu technik dla tych samych instancji zdaję się nie mieć sensu, co jednocześnie nie przekreśla użycia obu technik w konsultacji z osobą z wiedzą domenową w zaskresie medycyny bólów głowy.

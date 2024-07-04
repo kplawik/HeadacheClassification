@@ -73,9 +73,9 @@ g(x') = \phi_0 + \sum_{j=1}^M \phi_j
 
 Możesz znaleźć ten wzór w podobnej notacji w rozdziale o wartościach Shapleya. Więcej o faktycznej estymacji pojawi się później. Najpierw porozmawiajmy o właściwościach $\phi$’s, zanim przejdziemy do szczegółów ich estymacji.
 
-Wartości Shapleya są jedynym rozwiązaniem, które spełnia właściwości Efektywności, Symetrii, Pomocniczości i Addytywności. SHAP również je spełnia, ponieważ oblicza wartości Shapleya. W artykule SHAP znajdziesz rozbieżności między właściwościami SHAP a właściwościami Shapleya. SHAP opisuje następujące trzy pożądane właściwości:
+Wartości Shapleya są jedynym rozwiązaniem, które spełnia właściwości Efektywności, Symetrii, Pomocniczości i Addytywności. SHAP również je spełnia, ponieważ oblicza wartości Shapleya. W artykule SHAP znajdziesz rozbieżności między właściwościami SHAP a właściwościami Shapleya. SHAP opisuje następujące trzy pożądane właściwości:\\
 
-\subsubsection{Lokalna dokładność}
+\textbf{Lokalna dokładność}
 
 \[
 \hat{f}(x) = g(x') = \phi_0 + \sum_{j=1}^M \phi_j x'_j
@@ -87,15 +87,15 @@ Jeśli zdefiniujesz $\phi_0 = E_X(\hat{f}(x))$ i ustawisz wszystkie $x'_j$ na 1,
 \hat{f}(x) = \phi_0 + \sum_{j=1}^M \phi_j x'_j = E_X(\hat{f}(X)) + \sum_{j=1}^M \phi_j
 \]
 
-\subsubsection{Brak wartości}
+\textbf{Brak wartości}
 
 \[
 x'_j = 0 \Rightarrow \phi_j = 0
 \]
 
-Brak wartości oznacza, że brakująca cecha otrzymuje atrybucję równą zero. Zauważ, że $x'_j$ odnosi się do koalicji, gdzie wartość 0 reprezentuje brak wartości cechy. W notacji koalicyjnej, wszystkie wartości cech $x'_j$ instancji, którą chcemy wyjaśnić, powinny być ‘1’. Obecność 0 oznaczałaby, że wartość cechy jest nieobecna dla interesującej nas instancji. Ta właściwość nie należy do właściwości „normalnych” wartości Shapleya. Więc dlaczego jej potrzebujemy dla SHAP? Lundberg nazywa to „drobnostką księgowości”. Brakująca cecha mogłaby – teoretycznie – mieć dowolną wartość Shapleya bez naruszania właściwości lokalnej dokładności, ponieważ jest mnożona przez $x'_j = 0$. Właściwość Brak wartości wymusza, aby brakujące cechy miały wartość Shapleya równą 0. W praktyce, jest to istotne tylko dla cech stałych.
+Brak wartości oznacza, że brakująca cecha otrzymuje atrybucję równą zero. Zauważ, że $x'_j$ odnosi się do koalicji, gdzie wartość 0 reprezentuje brak wartości cechy. W notacji koalicyjnej, wszystkie wartości cech $x'_j$ instancji, którą chcemy wyjaśnić, powinny być ‘1’. Obecność 0 oznaczałaby, że wartość cechy jest nieobecna dla interesującej nas instancji. Ta właściwość nie należy do właściwości „normalnych” wartości Shapleya. Więc dlaczego jej potrzebujemy dla SHAP? Lundberg nazywa to „drobnostką księgowości”. Brakująca cecha mogłaby – teoretycznie – mieć dowolną wartość Shapleya bez naruszania właściwości lokalnej dokładności, ponieważ jest mnożona przez $x'_j = 0$. Właściwość Brak wartości wymusza, aby brakujące cechy miały wartość Shapleya równą 0. W praktyce, jest to istotne tylko dla cech stałych.\\
 
-\subsubsection{Spójność}
+\textbf{Spójność}\\
 
 Niech $\hat{f}_x(z') = \hat{f}(h_x(z'))$ i $z'_{-j}$ oznacza, że $z'_j = 0$. Dla dowolnych dwóch modeli $f$ i $f'$, które spełniają:
 
